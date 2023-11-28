@@ -7,41 +7,29 @@ let myLeads = []
 // myLeads = JSON.stringify(myLeads)
 // console.log(myLeads)
 
+// Get html elements
 const inputBtn = document.querySelector("#input-btn")
 const inputEl = document.querySelector("#input-el")
 const ulEl = document.querySelector("#ul-el")
+const deleteBtn = document.querySelector("#delete-btn")
 
-// localStorage.clear()
-let leadsFromLocalStorage = JSON.parse(localStorage.getItem("myLeads"))
+// retrieve leads from localStorage
+const leadsFromLocalStorage = JSON.parse(localStorage.getItem("myLeads"))
+
+// check if there are leads then render leads.
 if (leadsFromLocalStorage) {
     myLeads = leadsFromLocalStorage
-    renderLeads()
+    render(myLeads)
 }
-// console.log(leadsFromLocalStorage)
 
-inputBtn.addEventListener("click", function(){
-    myLeads.push(inputEl.value)
-    clearFunction()
-    
-    localStorage.setItem("myLeads", JSON.stringify(myLeads))
-    // let lead = JSON.parse(localStorage.getItem("myLeads"))
-    // leadsFromLocalStorage.push(lead)
-    
-    
-    renderLeads()
-    // console.log(localStorage.getItem("myLeads"))
-
-    
-})
-
-function renderLeads() {
+function render(leads) {
     let listItems = ""
 
-    for (let i = 0; i < myLeads.length; i++){
+    for (let i = 0; i < leads.length; i++){
         listItems += `
         <li> 
-            <a href='${myLeads[i]}' target ='_blank'> 
-                ${myLeads[i]}
+            <a href='${leads[i]}' target ='_blank'> 
+                ${leads[i]}
             </a>
         </li>`
         // console.log(listItems)
@@ -52,7 +40,30 @@ function renderLeads() {
     ulEl.innerHTML = listItems
 }
 
-function clearFunction() {
+deleteBtn.addEventListener("dblclick", function(){
+    localStorage.clear()
+    myLeads = []
+    render(myLeads)
+    // document.removeChild(document.documentElement)
+})
+
+inputBtn.addEventListener("click", function(){
+    myLeads.push(inputEl.value)
+    clearInputField()
+    
+    // store myLeads in the localStorage by stringifying the data
+    localStorage.setItem("myLeads", JSON.stringify(myLeads))
+   
+    
+    render(myLeads)
+    // console.log(localStorage.getItem("myLeads"))
+
+    
+})
+
+
+
+function clearInputField() {
     inputEl.value = "";
 }
 
